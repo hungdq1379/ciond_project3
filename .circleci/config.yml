@@ -130,7 +130,21 @@ jobs:
             npm audit fix --audit-level=critical --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
-
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: nsure back-end infrastructure exists
+          command: |
+           # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
+            aws cloudformation deploy \
+               --template-file .circleci/files/backend.yml \
+               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+                 --tags project=udapeople
+        
 workflows:
   default:
     jobs:
