@@ -152,6 +152,10 @@ jobs:
       - checkout
       - aws_configure_credential
       - run:
+          name: Install tar and gzip
+          command: |
+            yum install -y tar gzip
+      - run:
           name: Deploy Infrastructure
           command: |
            # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
