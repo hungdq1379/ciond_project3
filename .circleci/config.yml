@@ -157,7 +157,7 @@ jobs:
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
             aws cloudformation describe-stack-events --stack-name "udapeople-backend-582e208"
- 
+      - destroy-environment
 
 workflows:
   default:
@@ -175,4 +175,3 @@ workflows:
       - deploy-infrastructure:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       
-          
