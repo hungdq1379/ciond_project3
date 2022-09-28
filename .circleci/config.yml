@@ -153,6 +153,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - aws_cli_intsall
       - aws_configure_credential
       - run:
           name: Install tar and gzip
