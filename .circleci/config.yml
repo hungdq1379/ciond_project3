@@ -12,25 +12,6 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             # exit 1
-  aws_cli_intsall:
-    steps:
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt install curl
-            sudo apt install unzip
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-  aws_configure_credential:
-    steps:
-      - run:
-          name: Create Credential Configuration AWS
-          command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set aws_session_token $AWS_SESSION_TOKEN
-            aws configure set region $AWS_DEFAULT_REGION
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.  
@@ -148,35 +129,7 @@ jobs:
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
   
-  deploy-infrastructure:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - aws_cli_intsall
-      - aws_configure_credential
-      - run:
-          name: Install tar and gzip
-          command: |
-            yum install -y tar gzip
-      - run:
-          name: Ensure back-end infrastructure exists
-          command: |
-            # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
-            aws cloudformation deploy \
-               --template-file .circleci/files/backend.yml \
-               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-                 --tags project=udapeople
-      - run: 
-          name:  Ensure front-end infrastructure exists 
-          command: |
-           # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
-            aws cloudformation deploy \
-               --template-file .circleci/files/frontkend.yml \
-               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-                 --tags project=udapeople
+ 
 
 workflows:
   default:
@@ -191,6 +144,5 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      
           
