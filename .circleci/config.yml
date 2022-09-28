@@ -28,16 +28,7 @@ commands:
               #  Add revert code here. You can find this in the Getting Started section.
               exit 1
             fi
-  aws_cli_intsall:
-    steps:
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt install curl
-            sudo apt install unzip
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install          
+         
   aws_configure_credential:
     steps:
       - run:
@@ -165,6 +156,7 @@ jobs:
                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
+            aws cloudformation describe-stack-events --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
  
 
 workflows:
