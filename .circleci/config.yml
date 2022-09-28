@@ -141,7 +141,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - aws_cli_intsall
       - run:
           name: Deploy Infrastructure
           command: |
