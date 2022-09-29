@@ -217,7 +217,7 @@ workflows:
       - deploy-infrastructure-frontend:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - destroy-environment:
-          requires: [build-frontend,build-backend,scan-frontend,scan-backend,deploy-infrastructure-backend,deploy-infrastructure-frontend]
+          requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - create-inventory-file:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       
