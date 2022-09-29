@@ -137,7 +137,7 @@ jobs:
             npm audit fix --audit-level=critical --force
              # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
              # npm audit --audit-level=critical
-  deploy-infrastructure:
+  deploy-infrastructure-backend:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -157,6 +157,7 @@ jobs:
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
             aws cloudformation describe-stack-events --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment
 
   deploy-infrastructure-frontend:
     docker:
@@ -173,7 +174,7 @@ jobs:
                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
-     
+      - destroy-environment
   destroy-environment:
     docker:
       - image: amazon/aws-cli
@@ -182,6 +183,22 @@ jobs:
       - aws_configure_credential
       - destroy-environment
 
+  create-inventory-file:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - aws_configure_credential
+      - run:
+          name: Create inventory file
+          command: |
+            touch inventory
+            echo [all] > inventory
+            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
+            cat inventory
+
+
+          
 workflows:
   default:
     jobs:
@@ -195,10 +212,12 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      - deploy-infrastructure:
+      - deploy-infrastructure-backend:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - deploy-infrastructure-frontend:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - destroy-environment:
+          requires: [build-frontend,build-backend,scan-frontend,scan-backend,deploy-infrastructure-backend,deploy-infrastructure-frontend]
+      - create-inventory-file:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       
