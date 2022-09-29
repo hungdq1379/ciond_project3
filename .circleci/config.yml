@@ -196,7 +196,49 @@ jobs:
             echo [all] > inventory
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
             cat inventory
+  configure-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            python3 -m pip install --user ansible
+            python3 -m pip install --user ansible-core==2.12.3
+            python3 -m pip install --upgrade --user ansible
+            sudo apt install ansible
+            python3 -m pip show ansible
+            python3 -m pip install --user https://github.com/ansible/ansible/archive/devel.tar.gz
+            git clone https://github.com/ansible/ansible.git
+            cd ./ansible
+            source ./hacking/env-setup
+            source ./hacking/env-setup -q
+            python3 -m pip install --user -r ./requirements.txt
+            git pull --rebase
+            python3 -m pip install --user argcomplete
+            sudo apt install python3-argcomplete
+            sudo activate-global-python-argcomplete3
 
+            eval "$(register-python-argcomplete3 ansible)"
+            eval "$(register-python-argcomplete3 ansible-config)"
+            eval "$(register-python-argcomplete3 ansible-console)"
+            eval "$(register-python-argcomplete3 ansible-doc)"
+            eval "$(register-python-argcomplete3 ansible-galaxy)"
+            eval "$(register-python-argcomplete3 ansible-inventory)"
+            eval "$(register-python-argcomplete3 ansible-playbook)"
+            eval "$(register-python-argcomplete3 ansible-pull)"
+            eval "$(register-python-argcomplete3 ansible-vault)"
+            # Your code here
+            exit 1
+      - run:
+          name: Configure server
+          command: |
+            # Your code here
+            exit 1
+      # Here's where you will add some code to rollback on failure   
 
           
 workflows:
