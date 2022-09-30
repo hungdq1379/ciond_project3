@@ -198,8 +198,7 @@ jobs:
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
             cat inventory
            
-  
-  configure_infrastructure: 
+  configure-infrastructure: 
     docker:
       - image: python:3.7-alpine3.11
     steps:
@@ -215,7 +214,10 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            cat inventory.txt
+            touch inventory
+            echo [all] > inventory
+            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
+            cat inventory
             # ansible-playbook -i inventory.txt deploy-backend.yml
             ansible-playbook -i inventory.txt configure-server.yml
 
@@ -241,6 +243,6 @@ workflows:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - create-inventory-file:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
-      - configure_infrastructure:
-          requires: [build-frontend,build-backend,scan-frontend,scan-backend,create-inventory-file]
+      - configure-infrastructure:
+          requires: [create-inventory-file]
       
