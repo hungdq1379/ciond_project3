@@ -207,7 +207,7 @@ jobs:
           command: |
             cd .circleci/ansible
             touch inventory
-            echo [all] > inventory
+            echo [web] > inventory
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
             cat inventory
            
@@ -241,7 +241,7 @@ jobs:
           command: |
             cd .circleci/ansible
               touch inventory
-              echo [all] > inventory
+              echo [web] > inventory
               aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
             cat inventory.txt
             # ansible-playbook -i inventory.txt deploy-backend.yml
