@@ -1,5 +1,7 @@
 version: 2.1
-
+orbs:
+  aws-cli: circleci/aws-cli@2.0.0
+  aws-s3: circleci/aws-s3@1.0.9
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID. 
@@ -211,12 +213,12 @@ jobs:
            
   configure-infrastructure: 
     docker:
-    #  - image: python:3.7-alpine3.11
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
+    #  - image: amazon/aws-cli
     steps:
       - checkout
-      # - aws_cli_intsall
-      - aws_configure_credential
+    #  - aws_cli_intsall
+      # - aws_configure_credential
       - add_ssh_keys:
           fingerprints: ["26:72:38:f9:00:f6:87:2c:d9:ad:eb:90:62:c4:27:55"] # You can get this ID in the section where you registered the SSH Key
       - run:
@@ -228,9 +230,9 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            touch inventory
-            echo [all] > inventory
-            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
+             # touch inventory
+             # echo [all] > inventory
+             # aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
             cat inventory
             # ansible-playbook -i inventory.txt deploy-backend.yml
             ansible-playbook -i inventory.txt configure-server.yml
