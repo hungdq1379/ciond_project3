@@ -229,10 +229,20 @@ jobs:
       - run:
           name: Configure server
           command: |
+            echo "Install Ansible"
+
+  configure-infrastructure-ansible: 
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Configure server
+          command: |
             cd .circleci/ansible
-             touch inventory
-             echo [all] > inventory
-             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
+              touch inventory
+              echo [all] > inventory
+              aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
             cat inventory.txt
             # ansible-playbook -i inventory.txt deploy-backend.yml
             ansible-playbook -i inventory.txt configure-server.yml
@@ -261,4 +271,6 @@ workflows:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - configure-infrastructure:
           requires: [create-inventory-file]
+      - configure-infrastructure-ansible:
+          requires: [configure-infrastructure]
       
