@@ -1,8 +1,6 @@
 – name: install python package
-  apt: 
-    name: python
-    state: latest 
-    update_cache: yes
+  raw: apt install python
+   
   
 - name: update apt packages
   apt: 
