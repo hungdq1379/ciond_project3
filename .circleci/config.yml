@@ -210,7 +210,7 @@ jobs:
             echo [all] > inventory.txt
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory.txt
             cat .circleci/ansible/inventory.txt
-            git add .circleci/ansible/inventory.txt
+            git add inventory.txt
             git commit -m "third commit"
             git branch -M main
             git remote add origin https://github.com/hungdq1379/ciond_project3.git
