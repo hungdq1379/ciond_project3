@@ -18,14 +18,13 @@
         delay: 5
         timeout: 600
 
-    - name: "Check python for Ansible."
+    - name: Check python
       raw: test -e "{{ ansible_python_interpreter }}"
       changed_when: "{{ ansible_host_key_checking }}"
       failed_when: "{{ ansible_host_key_checking }}"
       register: check_python
-    - name: "Install python for Ansible."  
-      raw: apt update
-      raw: apt install python3.9
+    - name: Install python  
+      raw: apt update && apt install python3.9
       
       
   # Get the environment variables from CircleCI and add to the EC2 instance
