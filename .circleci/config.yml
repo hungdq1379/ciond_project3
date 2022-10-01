@@ -210,11 +210,11 @@ jobs:
             echo [all] > inventory.txt
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory.txt
             cat inventory.txt
-            git add inventory.txt
-            git commit -m "third commit"
-            git branch -M main
-            git remote add origin https://github.com/hungdq1379/ciond_project3.git
-            git push -u origin main
+            # git add inventory.txt
+            # git commit -m "third commit"
+            # git branch -M main
+           # git remote add origin https://github.com/hungdq1379/ciond_project3.git
+           # git push -u origin main
       
                  
   configure-infrastructure: 
@@ -252,10 +252,10 @@ jobs:
           name: Configure server Ansible 
           command: |
             cd .circleci/ansible
-            #  touch inventory
-            #  echo [all] > inventory
-            #  aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
-            #  cat inventory.txt
+            touch inventory
+            echo [all] > inventory
+            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory.txt
+            cat inventory.txt
             # ansible-playbook -i inventory.txt deploy-backend.yml
             ansible-playbook -i inventory.txt configure-server.yml
 
@@ -296,13 +296,14 @@ workflows:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - destroy-environment:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
-      - create-inventory-file:
-          requires: [build-frontend,build-backend,scan-frontend,scan-backend]
-          filters:
-            branches:
-              only: [main]
-    #  - configure-infrastructure:
-    #      requires: [create-inventory-file]
+     # - create-inventory-file:
+     #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
+     #     filters:
+     #       branches:
+     #         only: [main]
+      - configure-infrastructure:
+         #requires: [create-inventory-file]
+         requires: [build-frontend,build-backend,scan-frontend,scan-backend]
     #  - configure-infrastructure-ansible:
     #      requires: [configure-infrastructure]
       
