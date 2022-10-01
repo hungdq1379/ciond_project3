@@ -1,5 +1,3 @@
----
-
 – name: install python package
   apt: 
     name: python
