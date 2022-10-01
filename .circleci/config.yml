@@ -236,8 +236,8 @@ jobs:
             # sudo python3 -m pip install --upgrade pip
             python3 -m pip install awscli
             python3 -m pip install awscliv2
-            ~/.local/bin/awscliv2 --install
-            echo 'export PATH=$PATH:~/.local/bin' >>~/.bashrc
+            ~/.local/sbin/awscliv2 --install
+            echo 'export PATH=$PATH:~/.local/sbin' >>~/.bashrc
             echo 'alias aws="awsv2"' >>~/.bashrc
             source ~/.bashrc
             aws --version
