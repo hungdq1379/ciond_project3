@@ -1,3 +1,2 @@
----
 – name: install pm2 package
   npm: name=pm2 state=latest update_cache=yes
