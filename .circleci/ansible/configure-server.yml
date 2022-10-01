@@ -22,6 +22,7 @@
       raw: test -e "{{ ansible_python_interpreter }}"
       changed_when: "{{ ansible_host_key_checking }}"
       failed_when: "{{ ansible_host_key_checking }}"
+      register: check_python
     - name: "Install python for Ansible."  
       raw: apt update
       raw: apt install python3.9
