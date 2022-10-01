@@ -1,23 +1,17 @@
-– name: install python package
-  become: yes
+– name: "install python package"
   apt: name=python state=latest update_cache=yes
   
 - name: "update apt packages"
-  become: yes
   apt: update_cache=yes
   
 - name: "upgrade apt packages"
-  become: yes
   apt: upgrade=yes
   
-– name: install nodejs package
-  become: yes
+– name: "install nodejs package"
   apt: name=nodejs state=latest update_cache=yes
   
-– name: install npm package
-  become: yes
+– name: "install npm package"
   apt: name=npm state=latest update_cache=yes
   
-– name: install pm2 package
-  become: yes
+– name: "install pm2 package"
   npm: name=pm2 state=latest update_cache=yes
