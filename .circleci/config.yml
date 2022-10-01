@@ -210,7 +210,11 @@ jobs:
             echo [all] > .circleci/ansible/inventory.txt
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
-           
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .circleci/ansible/inventory.txt
+                 
   configure-infrastructure: 
     docker:
       - image: python:3.11-rc-alpine
