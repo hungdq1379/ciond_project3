@@ -1,3 +1,4 @@
+-
 - name: "upgrade apt packages"
   become: yes
   apt: upgrade=yes
