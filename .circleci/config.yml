@@ -199,6 +199,7 @@ jobs:
   create-inventory-file:
     docker:
       - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - aws_configure_credential
@@ -210,6 +211,10 @@ jobs:
             echo [web] > inventory.txt
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory.txt
             cat inventory.txt
+      - persist_to_workspace:
+          root: .circleci/ansible
+          paths: 
+            - inventory.txt     
             # git add inventory.txt
             # git commit -m "third commit"
             # git branch -M main
