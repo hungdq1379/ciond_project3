@@ -25,9 +25,6 @@
       #failed_when: "{{ ansible_host_key_checking }}"
       #register: check_python
       apt update
-      apt install software-properties-common
-      add-apt-repository ppa:deadsnakes/ppa
-      apt update
       apt install python
       python3 --version
       
