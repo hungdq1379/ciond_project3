@@ -1,2 +1,0 @@
-– name: install npm package
-  apt: name=npm state=latest update_cache=yes
