@@ -1,3 +1,2 @@
----
 – name: install python package
   apt: name=python state=latest update_cache=yes
