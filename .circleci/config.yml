@@ -226,7 +226,13 @@ jobs:
           command: |
             # install the dependencies needed for your playbook
             apk add --update ansible 
-            apk add --no-cache aws-cli
+             # apk add --no-cache aws-cli
+            apk update \
+              && apk --no-cache add curl \
+              && apk --no-cache add unzip \
+              && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+              && unzip awscliv2.zip \
+              && ./aws/install
       - run:
           name: Configure server
           command: |
@@ -237,6 +243,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - aws_configure_credential
       - run:
           name: Configure server
           command: |
