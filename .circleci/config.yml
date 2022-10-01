@@ -205,8 +205,8 @@ jobs:
       - run:
           name: Create inventory file
           command: |
-            cd .circleci/ansible
-            touch .circleci/ansible/inventory.txt
+            #  cd .circleci/ansible
+            #  touch .circleci/ansible/inventory.txt
             echo [all] > .circleci/ansible/inventory.txt
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
