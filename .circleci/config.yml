@@ -218,13 +218,7 @@ jobs:
           root: .
           paths:
             - .circleci/ansible/inventory.txt   
-            # git add inventory.txt
-            # git commit -m "third commit"
-            # git branch -M main
-           # git remote add origin https://github.com/hungdq1379/ciond_project3.git
-           # git push -u origin main
-      
-                 
+                        
   configure-infrastructure: 
     docker:
       - image: python:3.11-rc-alpine
@@ -241,19 +235,6 @@ jobs:
             # install the dependencies needed for your playbook
             apk add --update ansible 
             apk add --no-cache aws-cli
-             #apk update \
-             #  && apk --no-cache add curl \
-             #  && apk --no-cache add unzip \
-             #   && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-             #  && unzip awscliv2.zip \
-              #   && ./aws/install
-              # sudo python3 -m pip install --upgrade pip
-             # python3 -m pip install awscli
-             # python3 -m pip install awscliv2
-            # ~/.local/sbin/awscliv2 --install
-            #  echo 'export PATH=$PATH:~/.local/sbin' >>~/.bashrc
-            #  echo 'alias aws="awsv2"' >>~/.bashrc
-            # source ~/.bashrc
             aws --version
       - aws_configure_credential 
       - attach_workspace:
@@ -262,11 +243,6 @@ jobs:
           name: Configure server Ansible 
           command: |
             cd .circleci/ansible
-             # touch inventory
-             # echo [all] > inventory
-            #  aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory.txt
-             # cat inventory.txt
-            # ansible-playbook -i inventory.txt deploy-backend.yml
             ansible-playbook -i inventory.txt configure-server.yml
 
   configure-infrastructure-ansible: 
