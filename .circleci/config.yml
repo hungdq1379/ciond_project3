@@ -222,7 +222,7 @@ jobs:
   configure-infrastructure: 
     docker:
       - image: python:3.11-rc-alpine
-    #  - image: amazon/aws-cli
+   
     steps:
       - checkout
       - add_ssh_keys:
@@ -259,7 +259,9 @@ jobs:
               cd backend
               npm install
               # Run and save the migration output
+              npm audit fix
               npm run migrations > migrations_dump.txt
+
       - run:
           name: Send migration results to memstash
           command: |
