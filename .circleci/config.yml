@@ -199,9 +199,12 @@ jobs:
   create-inventory-file:
     docker:
       - image: amazon/aws-cli
-      - image: circleci/node:13.8.0
     steps:
       - checkout
+      - run:
+          name: isntall tar
+          command: | 
+            yum install -y tar gzip
       - aws_configure_credential
       - run:
           name: Create inventory file
