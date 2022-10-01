@@ -1,7 +1,7 @@
 version: 2.1
-#orbs:
-  # aws-cli: circleci/aws-cli@2.0.0
- # aws-s3: circleci/aws-s3@1.0.9
+orbs:
+  aws-cli: circleci/aws-cli@2.0.0
+  aws-s3: circleci/aws-s3@1.0.9
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID. 
@@ -246,11 +246,12 @@ jobs:
   run-migrations:
     docker:
       - image: circleci/node:13.8.0 
-      - image: amazon/aws-cli
+      
     steps:
       - checkout
       - restore_cache:
           keys: [backend-build]
+      - aws_cli_intsall
       - aws_configure_credential 
       - run:
           name: Run migrations
