@@ -255,7 +255,9 @@ jobs:
             #  echo 'alias aws="awsv2"' >>~/.bashrc
             # source ~/.bashrc
             aws --version
-      - aws_configure_credential    
+      - aws_configure_credential 
+      - attach_workspace:
+          at: .   
       - run:
           name: Configure server Ansible 
           command: |
