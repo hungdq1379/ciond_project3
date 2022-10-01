@@ -213,7 +213,7 @@ jobs:
            
   configure-infrastructure: 
     docker:
-      - image: python:3.7-alpine3.11
+      - image: python:3.11-rc-alpine
     #  - image: amazon/aws-cli
     steps:
       - checkout
@@ -233,7 +233,7 @@ jobs:
             #   && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
             #  && unzip awscliv2.zip \
             #   && ./aws/install
-            sudo python3 -m pip install --upgrade pip
+            # sudo python3 -m pip install --upgrade pip
             python3 -m pip install awscli
             python3 -m pip install awscliv2
             ~/.local/bin/awscliv2 --install
