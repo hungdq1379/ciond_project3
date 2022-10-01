@@ -309,8 +309,8 @@ workflows:
           filters:
             branches:
               only: [main]
-     # - configure-infrastructure:
-         #requires: [create-inventory-file]
+      - configure-infrastructure:
+          requires: [create-inventory-file]
      #    requires: [build-frontend,build-backend,scan-frontend,scan-backend]
     #  - configure-infrastructure-ansible:
     #      requires: [configure-infrastructure]
