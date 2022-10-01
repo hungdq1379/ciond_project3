@@ -1,7 +1,5 @@
 —
-
 # tasks file for .circleci/ansible/roles/configure-server
-
 – import_tasks: install_python.yml
 – import_tasks: update_packages.yml
 – import_tasks: install_nodejs.yml
