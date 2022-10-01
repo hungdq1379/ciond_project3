@@ -234,9 +234,15 @@ jobs:
               && unzip awscliv2.zip \
               && ./aws/install
       - run:
-          name: Configure server
+          name: Configure server Ansible 
           command: |
-            echo "Install Ansible"
+            cd .circleci/ansible
+              touch inventory
+              echo [web] > inventory
+              aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=Udacity" --output text >> inventory
+            cat inventory.txt
+            # ansible-playbook -i inventory.txt deploy-backend.yml
+            ansible-playbook -i inventory.txt configure-server.yml
 
   configure-infrastructure-ansible: 
     docker:
@@ -279,6 +285,6 @@ workflows:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       - configure-infrastructure:
           requires: [create-inventory-file]
-      - configure-infrastructure-ansible:
-          requires: [configure-infrastructure]
+    #  - configure-infrastructure-ansible:
+    #      requires: [configure-infrastructure]
       
