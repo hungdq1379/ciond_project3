@@ -1,5 +1,5 @@
 – import_tasks: install_python.yml
 – import_tasks: update_packages.yml
 – import_tasks: install_nodejs.yml
-- import tasks: install_npm.yml
-- import tasks: install_pm2.yml
+- import_tasks: install_npm.yml
+- import_tasks: install_pm2.yml
