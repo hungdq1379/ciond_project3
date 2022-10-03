@@ -1,5 +1,5 @@
 – name: install python package
-  become: yes
+  become: true
   apt: 
     name: python
     state: latest
