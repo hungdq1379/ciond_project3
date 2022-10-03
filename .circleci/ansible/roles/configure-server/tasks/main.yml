@@ -1,3 +1,12 @@
+- name: "update apt packages"
+  become: true
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: yes
 # – name: install python package
 #   become: true
 #   apt: 
@@ -5,9 +14,9 @@
 #     state: latest
 #     update_cache: yes
     
-- name: update apt packages
-  apt: 
-    update_cache: yes
+# - name: update apt packages
+#   apt: 
+#     update_cache: yes
   
 # - name: upgrade apt packages
 #   apt: 
