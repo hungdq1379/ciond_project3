@@ -24,7 +24,7 @@
       register: check_python
     - name: Install python  
       raw: apt -y update && apt install -y python-minimal
-      
+      when: check_python.rc != 0
       
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
