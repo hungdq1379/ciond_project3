@@ -8,18 +8,20 @@
   apt:
     upgrade: yes
 
-- name: "remove depencies that are no long required"
+- name: "install nodejs"
   become: yes
   apt:
-    autoremove: yes
-
-- name: "install depencies"
-  become: yes
-  apt:
-    name: ["nodejs", "npm"]
+    name: "nodejs"
     state: latest
     update_cache: yes
     
+- name: "install npm"
+  become: yes
+  apt:
+    name: "npm"
+    state: latest
+    update_cache: yes
+
 - name: "install pm2"
   become: yes
   npm:
