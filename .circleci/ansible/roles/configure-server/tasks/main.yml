@@ -22,23 +22,23 @@
 #   apt: 
 #     upgrade: yes
   
-# – name: install nodejs package
-#   become: yes
-#   apt: 
-#     name: nodejs 
-#     state: latest
-#     update_cache: yes
+– name: install nodejs package
+  become: yes
+  apt: 
+    name: nodejs 
+    state: latest
+    update_cache: yes
   
-# – name: install npm package
-#   become: yes
-#   apt: 
-#     name: npm 
-#     state: latest
-#     update_cache: yes
+– name: install npm package
+  become: yes
+  apt: 
+    name: npm 
+    state: latest
+    update_cache: yes
   
-# – name: install pm2 package
-#   become: yes
-#   npm: 
-#     name: pm2 
-#     state: latest 
-#     update_cache: yes
+– name: install pm2 package
+  become: yes
+  npm: 
+    name: pm2 
+    state: latest 
+    update_cache: yes
