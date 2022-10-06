@@ -270,6 +270,8 @@ jobs:
                   # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
                   curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi 
+      
+
   deploy-frontend:
     docker: 
       - image: circleci/node:13.8.0
@@ -294,14 +296,36 @@ jobs:
             # tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws s3 cp dist s3://udapeople-00892bb --recursive
-  
-  deploy-backtend:
+      
+
+  deploy-backend:
     docker: 
-      - image: circleci/node:13.8.0
+      - image: python:3.11-rc-alpine
     steps:
       - checkout 
       - add_ssh_keys:
           fingerprints: ["26:72:38:f9:00:f6:87:2c:d9:ad:eb:90:62:c4:27:55"] # You can get this ID in the section where you registered the SSH Key
+      - run: 
+          name: Install independencies
+          command: |
+            apk add --update ansible tar npm curl
+            apk add --no-cache aws-cli
+      - attach_workspace:
+          at: .        
+      - run:
+          name: Deploy Backend
+          command: |
+            cd backend
+            npm i
+            npm run build
+            cd ..
+              # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      
 
 workflows:
   default:
@@ -330,6 +354,8 @@ workflows:
       - configure-infrastructure:
           requires: [create-inventory-file]
       - run-migrations:
-          requires: [build-frontend,build-backend,scan-frontend,scan-backend]
+          requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
+      - deploy-backend:
+          requires: [deploy-frontend]
