@@ -28,7 +28,10 @@ commands:
               #  cd ~/project/backend
               #  npm install
               #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              cd ~/project/backend
+              npm install
+              npm run migration:revert
+            #  exit 1
             fi
          
   aws_configure_credential:
@@ -190,13 +193,20 @@ jobs:
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
      
-  destroy-environment:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - aws_configure_credential
-      - destroy-environment
+    # destroy-environment:
+    #   docker:
+    #     - image: amazon/aws-cli
+    #   steps:
+    #     - checkout
+    #     - aws_configure_credential
+    #     - destroy-environment
+  
+    # revert-migration:
+    #   docker:
+    #     - image: circleci/node:13.8.0
+    #   steps:
+    #     - checkout
+    #     - revert-migrations
 
   create-inventory-file:
     docker:
@@ -298,7 +308,8 @@ jobs:
             # tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws s3 cp dist s3://udapeople-00892bb --recursive
-      
+      - destroy-environment
+      - revert-migrations  
 
   deploy-backend:
     docker: 
@@ -328,6 +339,8 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
+      - destroy-environment
+      - revert-migrations
       
 
 workflows:
@@ -359,9 +372,13 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
-      - destroy-environment:
-          requires: [deploy-frontend]
+      # - destroy-environment:
+      #     requires: [deploy-frontend]
+      # - revert-migration:
+      #     requires: [destroy-environment]
       - deploy-backend:
           requires: [deploy-frontend]
-      - destroy-environment:
-          requires: [deploy-backend]
+      # - destroy-environment:
+      #     requires: [deploy-frontend]
+      # - revert-migration:
+      #     requires: [destroy-environment]
