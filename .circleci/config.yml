@@ -294,6 +294,14 @@ jobs:
             # tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws s3 cp dist s3://udapeople-00892bb --recursive
+  
+  deploy-backtend:
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout 
+      - add_ssh_keys:
+          fingerprints: ["26:72:38:f9:00:f6:87:2c:d9:ad:eb:90:62:c4:27:55"] # You can get this ID in the section where you registered the SSH Key
 
 workflows:
   default:
