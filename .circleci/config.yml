@@ -22,7 +22,7 @@ commands:
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            VALUE=$(curl -k https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            VALUE=$(curl -k https://kvdb.io/64xvxrRXspfWtdyJZVPqvf/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if [[ $VALUE -eq 1 ]]
             then
               #  cd ~/project/backend
