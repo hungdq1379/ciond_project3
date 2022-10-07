@@ -10,7 +10,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rm s3://udapeople-00892bb --recursive
+            aws s3 rm s3://udapeople-02c7ba7 --recursive
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -193,20 +193,6 @@ jobs:
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
      
-    # destroy-environment:
-    #   docker:
-    #     - image: amazon/aws-cli
-    #   steps:
-    #     - checkout
-    #     - aws_configure_credential
-    #     - destroy-environment
-  
-    # revert-migration:
-    #   docker:
-    #     - image: circleci/node:13.8.0
-    #   steps:
-    #     - checkout
-    #     - revert-migrations
 
   create-inventory-file:
     docker:
@@ -307,7 +293,7 @@ jobs:
             npm run build
             # tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            aws s3 cp dist s3://udapeople-00892bb --recursive
+            aws s3 cp dist s3://udapeople-02c7ba7 --recursive
       - destroy-environment
       - revert-migrations  
 
@@ -341,7 +327,44 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
       - revert-migrations
-      
+
+  smoke-test:
+    docker: 
+      - image: python:3.11-rc-alpine
+    steps:
+      - checkout
+      - run: 
+          name: Install dependencies
+          command: |
+            apk add --update ansible curl nodejs npm
+            apk add --no-cache aws-cli
+      - run:
+          name: Backend smoke test
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Project,Values=Udacity" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
+      - run:
+          name: Frontend smoke test
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
+            echo ${URL} 
+            if curl -s ${URL} | grep "Welcome"
+            then
+                # Change this to 0 after the job fails
+              return 0
+            else
+              return 1
+            fi
+      - destroy-environment
+      - revert-migrations
+    
 
 workflows:
   default:
@@ -372,13 +395,7 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [build-frontend,build-backend,scan-frontend,scan-backend]
-      # - destroy-environment:
-      #     requires: [deploy-frontend]
-      # - revert-migration:
-      #     requires: [destroy-environment]
       - deploy-backend:
           requires: [deploy-frontend]
-      # - destroy-environment:
-      #     requires: [deploy-frontend]
-      # - revert-migration:
-      #     requires: [destroy-environment]
+      - smoke-test:
+          requires: [deploy-frontend,deploy-backend]
