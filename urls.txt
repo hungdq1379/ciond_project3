@@ -1,30 +1,10 @@
-http://udapeople-00892bb.s3-website-us-east-1.amazonaws.com
-http://udapeople-02c7ba7.s3-website-us-east-1.amazonaws.com
-http://udapeople-03c7ce0.s3-website-us-east-1.amazonaws.com
-http://udapeople-03c7ce0.s3-website-us-east-1.amazonaws.com
-http://udapeople-03dc5b2.s3-website-us-east-1.amazonaws.com
-http://udapeople-0ccde80.s3-website-us-east-1.amazonaws.com
-http://udapeople-0d26ca0.s3-website-us-east-1.amazonaws.com
-http://udapeople-f4cd0f9.s3-website-us-east-1.amazonaws.com
-http://udapeople-f32228e.s3-website-us-east-1.amazonaws.com
-http://udapeople-f2a7a56.s3-website-us-east-1.amazonaws.com
-http://udapeople-f23b292.s3-website-us-east-1.amazonaws.com
-http://udapeople-f214e67.s3-website-us-east-1.amazonaws.com
-http://udapeople-f02031d.s3-website-us-east-1.amazonaws.com
-http://udapeople-ee8ee05.s3-website-us-east-1.amazonaws.com
-http://udapeople-ed34f84.s3-website-us-east-1.amazonaws.com
-http://udapeople-ecf4e83.s3-website-us-east-1.amazonaws.com
-http://udapeople-ec89ebd.s3-website-us-east-1.amazonaws.com
-http://udapeople-ec5d7cd.s3-website-us-east-1.amazonaws.com
-http://udapeople-e8d05ce.s3-website-us-east-1.amazonaws.com
-http://udapeople-e72413b.s3-website-us-east-1.amazonaws.com
-http://udapeople-e15c76a.s3-website-us-east-1.amazonaws.com
-http://udapeople-dd4d3d6.s3-website-us-east-1.amazonaws.com
-http://udapeople-8642636.s3-website-us-east-1.amazonaws.com
-http://udapeople-8274620.s3-website-us-east-1.amazonaws.com
-http://udapeople-80b227c.s3-website-us-east-1.amazonaws.com
-http://udapeople-7f8c5fd.s3-website-us-east-1.amazonaws.com
-http://udapeople-7e86536.s3-website-us-east-1.amazonaws.com
-http://udapeople-7d454ba.s3-website-us-east-1.amazonaws.com
-http://udapeople-7475d82.s3-website-us-east-1.amazonaws.com
-http://udapeople-72c1576.s3-website-us-east-1.amazonaws.com
+1. Public URL to GitHub repository (not private) [URL01] e.g.
+https://github.com/username/project3-automation-superpower
+2. Public URL for your S3 Bucket s3-website (aka, your green candidate front-end) [URL02] e.g.
+http://udapeople-a7ea07c0.s3-website-us-east-1.amazonaws.com
+3. Public URL for your CloudFront distribution cloudfront.net (aka, your blue production front-end) [URL03] e.g.
+http://d1cptrdkpsxeoh.cloudfront.net/#/employees
+4. Public URL to deployed application back-end in EC2 [URL04] e.g.
+http://ec2-52-91-116-15.compute-1.amazonaws.com:3030/api/status
+5. Public URL to your Prometheus Server [URL05] e.g.
+http://ec2-54-144-29-47.compute-1.amazonaws.com:9090/graph
