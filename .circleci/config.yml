@@ -380,6 +380,7 @@ jobs:
               --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
+            aws cloudformation describe-stack-events --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}"
   cleanup-phase:
     docker: 
       - image: amazon/aws-cli
@@ -445,4 +446,4 @@ workflows:
       - promotion-phase:
           requires: [deploy-frontend]
       - cleanup-phase:
-          requires: [promotion-phase]
+          requires: [deploy-frontend]
