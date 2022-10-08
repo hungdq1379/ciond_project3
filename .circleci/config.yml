@@ -174,7 +174,7 @@ jobs:
                --template-file .circleci/files/backend.yml \
                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-                 --tags project=udacity
+                 --tags project=udapeople
             aws cloudformation describe-stack-events --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
      
 
@@ -192,7 +192,7 @@ jobs:
                --template-file .circleci/files/frontend.yml \
                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-                 --tags project=udacity
+                --tags project=udapeople
      
 
   create-inventory-file:
@@ -366,6 +366,20 @@ jobs:
       - destroy-environment
       - revert-migrations
     
+  promotion-phase:
+    docker: 
+      - image: amazon/aws-cli
+    steps:
+      - checkout 
+      - aws_configure_credential
+      - run:
+          name: Deploy Infrastructure CloudFront
+          command: | 
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=udapeople
 
 workflows:
   default:
@@ -399,4 +413,6 @@ workflows:
       - deploy-backend:
           requires: [deploy-frontend]
       - smoke-test:
+          requires: [deploy-frontend]
+      - promotion-phase:
           requires: [deploy-frontend]
