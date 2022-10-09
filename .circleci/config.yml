@@ -169,10 +169,10 @@ jobs:
           command: |
             cd .circleci/files
             aws cloudformation delete-stack --stack-name "InitialStack"
-            aws cloudformation deploy \
-                --template-file cloudfront.yml \
-                --stack-name "InitialStack" \
-                --parameter-overrides WorkflowID=udapeople-kk1j287dhjppmz438
+            # aws cloudformation deploy \
+            #     --template-file cloudfront.yml \
+            #     --stack-name "InitialStack" \
+            #     --parameter-overrides WorkflowID=udapeople-kk1j287dhjppmz438
 
   deploy-infrastructure-backend:
     docker:
@@ -444,8 +444,8 @@ workflows:
           requires: [build-backend] 
       - deploy-infrastructure-cloudfront:
           requires: [scan-backend]
-      # - deploy-infrastructure-backend:
-      #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
+      - deploy-infrastructure-backend:
+          requires: [scan-backend]
       # - deploy-infrastructure-frontend:
       #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       
