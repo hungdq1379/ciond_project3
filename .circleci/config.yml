@@ -168,6 +168,7 @@ jobs:
           name: Deploy Infrastructure for CloudFront
           command: |
             cd .circleci/files
+            aws cloudformation delete-stack --stack-name "InitialStack"
             aws cloudformation deploy \
                 --template-file cloudfront.yml \
                 --stack-name "InitialStack" \
