@@ -3,6 +3,7 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.0
   aws-s3: circleci/aws-s3@1.0.9
   slack: circleci/slack@4.1
+  node: circleci/node@4.1
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID. 
@@ -155,8 +156,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix --audit-level=critical --force
-           
+            npm audit fix --audit-level=critical --force  
             
   deploy-infrastructure-backend:
     docker:
@@ -426,6 +426,7 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
+      
       # - deploy-infrastructure-backend:
       #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       # - deploy-infrastructure-frontend:
