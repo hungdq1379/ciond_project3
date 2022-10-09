@@ -140,9 +140,9 @@ jobs:
           command: |
             cd frontend
             npm install
-              # Do not use the --force option along with the command below in your local
             npm audit fix --audit-level=critical --force
-            #  npm audit --audit-level=critical
+              # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
+            npm audit --audit-level=critical
   scan-backend:
     docker:
       - image: circleci/node:13.8.0 
@@ -155,10 +155,9 @@ jobs:
           command: |
             cd backend
             npm install
-          
-             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
-            # npm audit --audit-level=critical
             npm audit fix --audit-level=critical --force
+             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
+            npm audit --audit-level=critical
             
   deploy-infrastructure-backend:
     docker:
