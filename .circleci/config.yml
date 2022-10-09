@@ -165,12 +165,12 @@ jobs:
       - checkout
       - aws_configure_credential
       - run: 
-          name: Deploy Infrastructure for FrontEnd
+          name: Deploy Infrastructure for CloudFront
           command: |
             cd .circleci/files
             aws cloudformation deploy \
                 --template-file cloudfront.yml \
-                --stack-name InitialStack\
+                --stack-name "InitialStack" \
                 --parameter-overrides WorkflowID=udapeople-kk1j287dhjppmz439
 
   deploy-infrastructure-backend:
