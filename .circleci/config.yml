@@ -168,11 +168,11 @@ jobs:
           name: Deploy Infrastructure for CloudFront
           command: |
             cd .circleci/files
-            aws cloudformation delete-stack --stack-name "InitialStack"
-            # aws cloudformation deploy \
-            #     --template-file cloudfront.yml \
-            #     --stack-name "InitialStack" \
-            #     --parameter-overrides WorkflowID=udapeople-kk1j287dhjppmz438
+              #aws cloudformation delete-stack --stack-name "InitialStack"
+            aws cloudformation deploy \
+                --template-file cloudfront.yml \
+                --stack-name "InitialStack--${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}""
 
   deploy-infrastructure-backend:
     docker:
@@ -193,8 +193,8 @@ jobs:
                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
-            # aws cloudformation describe-stack-events --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws cloudformation describe-stack-events --stack-name "udapeople-backend-1"
+            aws cloudformation describe-stack-events --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+         
 
   deploy-infrastructure-frontend:
     docker:
