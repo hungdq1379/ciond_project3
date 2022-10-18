@@ -171,8 +171,8 @@ jobs:
               #aws cloudformation delete-stack --stack-name "InitialStack"
             aws cloudformation deploy \
                 --template-file cloudfront.yml \
-                --stack-name "CloudFront-${CIRCLE_WORKFLOW_ID:0:7}" \
-                --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
+                --stack-name "CloudFront-${CIRCLE_WORKFLOW_ID:0:7}-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}-${CIRCLE_WORKFLOW_ID:0:7}"
 
   deploy-infrastructure-backend:
     docker:
