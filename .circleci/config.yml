@@ -442,10 +442,10 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      - deploy-infrastructure-cloudfront:
-          requires: [scan-backend]
-      - deploy-infrastructure-backend:
-          requires: [scan-backend]
+      # - deploy-infrastructure-cloudfront:
+      #     requires: [scan-backend]
+      # - deploy-infrastructure-backend:
+      #     requires: [scan-backend]
       # - deploy-infrastructure-frontend:
       #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       
