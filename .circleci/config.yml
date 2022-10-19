@@ -480,5 +480,5 @@ workflows:
       #     requires: [deploy-frontend]
       # - destroy-environments:
             # requires: [deploy-infrastructure-frontend]
-      - destroy-environments:
-          requires: [deploy-infrastructure-backend]
+      # - destroy-environments:
+          # requires: [deploy-infrastructure-backend]
