@@ -210,7 +210,7 @@ jobs:
                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                 --tags project=udapeople
-      - destroy-environment
+      
 
   create-inventory-file:
     docker:
@@ -427,6 +427,11 @@ jobs:
               # your code goes here
               echo "nothing to do"
             fi
+  destroy-environments:
+    docker: 
+      - image: amazon/aws-cli
+    steps:
+      - destroy-environment
 
 workflows:
   default:
@@ -467,3 +472,5 @@ workflows:
       #     requires: [deploy-frontend]
       # - cleanup-phase:
       #     requires: [deploy-frontend]
+      - destroy-environments:
+            requires: [deploy-infrastructure-frontend]
