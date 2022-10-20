@@ -234,7 +234,7 @@ jobs:
             cd .circleci/ansible
             touch inventory.txt
             echo [web] > inventory.txt
-            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:Project,Values=udapeople" --output text >> inventory.txt
+            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicIpAddress'  --filters "Name=tag:project,Values=udapeople" --output text >> inventory.txt
             cat inventory.txt
       - persist_to_workspace:
           root: .
