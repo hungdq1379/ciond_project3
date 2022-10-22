@@ -488,10 +488,10 @@ workflows:
           requires: [create-inventory-file]
       # - run-migrations:
           # requires: [scan-backend]
-      # - deploy-frontend:
-          # requires: [create-inventory-file]
-      # - deploy-backend:
-          # requires: [deploy-frontend]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [configure-infrastructure]
       # - smoke-test:
       #     requires: [deploy-frontend]
       # - promotion-phase:
