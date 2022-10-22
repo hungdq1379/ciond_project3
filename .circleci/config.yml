@@ -300,19 +300,7 @@ jobs:
           root: .
           paths:
             - backend/.env
-      # - run:
-      #     name: run migration commnad 
-      #     command: |
-      #       cd backend
-      #       npm install
-      #       npm audit --audit-level=critical --force 
-      #       npm run migrations > migrations_dump.txt
-      #       if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
-      #       then
-      #         curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-      #       fi
-      
-     # - destroy-environment
+    
 
   deploy-frontend:
     docker: 
@@ -338,7 +326,7 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist  
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment
-    #   - revert-migrations  
+      # - revert-migrations  
 
   deploy-backend:
     docker: 
@@ -369,7 +357,7 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
-  #    - revert-migrations
+      # - revert-migrations
 
   smoke-test:
     docker: 
@@ -406,7 +394,7 @@ jobs:
               return 1
             fi
       - destroy-environment
-      - revert-migrations
+      # - revert-migrations
     
   promotion-phase:
     docker: 
@@ -491,8 +479,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-backend:
           requires: [configure-infrastructure]
-      # - smoke-test:
-      #     requires: [deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend]
       # - promotion-phase:
       #     requires: [deploy-frontend]
       # - cleanup-phase:
