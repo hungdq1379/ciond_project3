@@ -454,20 +454,20 @@ workflows:
           requires: [build-backend] 
       # - deploy-infrastructure-cloudfront:
           # requires: [scan-backend]
-      - deploy-infrastructure-backend:
-          requires: [scan-backend]
-      - deploy-infrastructure-frontend:
-          requires: [scan-backend]
+      # - deploy-infrastructure-backend:
+      #     requires: [scan-backend]
+      # - deploy-infrastructure-frontend:
+      #     requires: [scan-backend]
       
-      - create-inventory-file:
-          requires: [deploy-infrastructure-frontend]
-          filters:
-            branches:
-              only: [main]
-      - configure-infrastructure:
-          requires: [create-inventory-file]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      # - create-inventory-file:
+      #     requires: [deploy-infrastructure-frontend]
+      #     filters:
+      #       branches:
+      #         only: [main]
+      # - configure-infrastructure:
+      #     requires: [create-inventory-file]
+      - run-migrations:
+          requires: [build-backend]
       # - deploy-frontend:
       #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       # - deploy-backend:
@@ -478,7 +478,7 @@ workflows:
       #     requires: [deploy-frontend]
       # - cleanup-phase:
       #     requires: [deploy-frontend]
-      - destroy-environments:
-          requires: [deploy-infrastructure-backend,deploy-infrastructure-frontend]
+      # - destroy-environments:
+          # requires: [deploy-infrastructure-backend,deploy-infrastructure-frontend]
       # - destroy-environments:
           # requires: [deploy-infrastructure-backend]
