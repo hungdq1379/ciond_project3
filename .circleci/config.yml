@@ -472,8 +472,8 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      # - deploy-infrastructure-cloudfront:
-          # requires: [scan-backend]
+      - deploy-infrastructure-cloudfront:
+          requires: [scan-backend]
       - deploy-infrastructure-backend:
           requires: [scan-backend]
       - deploy-infrastructure-frontend:
@@ -489,7 +489,7 @@ workflows:
       # - run-migrations:
           # requires: [scan-backend]
       - deploy-frontend:
-          requires: [scan-backend]
+          requires: [create-inventory-file]
       - deploy-backend:
           requires: [deploy-frontend]
       # - smoke-test:
