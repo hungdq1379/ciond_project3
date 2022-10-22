@@ -482,8 +482,8 @@ workflows:
           requires: [configure-infrastructure]
       - smoke-test:
           requires: [deploy-frontend]
-      # - promotion-phase:
-          # requires: [smoke-test]
+      - promotion-phase:
+          requires: [smoke-test]
       # - cleanup-phase:
       #     requires: [deploy-frontend]
       # - destroy-environments:
