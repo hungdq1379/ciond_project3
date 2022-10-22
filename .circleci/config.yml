@@ -305,7 +305,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit --audit-level=critical
+            npm audit --audit-level=critical --force 
             npm run migrations > migrations_dump.txt
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
@@ -324,7 +324,7 @@ jobs:
       - run:
           name: Get backend URL
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Project,Values=Udacity" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:project,Values=udapeople" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
@@ -347,7 +347,7 @@ jobs:
     steps:
       - checkout 
       - add_ssh_keys:
-          fingerprints: ["26:72:38:f9:00:f6:87:2c:d9:ad:eb:90:62:c4:27:55"] # You can get this ID in the section where you registered the SSH Key
+          fingerprints: ["d6:4d:9b:cc:82:32:6f:d7:11:5e:23:9c:d1:aa:4b:b0"] # You can get this ID in the section where you registered the SSH Key
       - run: 
           name: Install independencies
           command: |
@@ -488,10 +488,10 @@ workflows:
       #     requires: [create-inventory-file]
       - run-migrations:
           requires: [scan-backend]
-      # - deploy-frontend:
-      #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
-      # - deploy-backend:
-      #     requires: [deploy-frontend]
+      - deploy-frontend:
+          requires: [scan-backend]
+      - deploy-backend:
+          requires: [deploy-frontend]
       # - smoke-test:
       #     requires: [deploy-frontend]
       # - promotion-phase:
