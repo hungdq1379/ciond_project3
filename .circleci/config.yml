@@ -281,7 +281,7 @@ jobs:
               cd backend
               npm install
               # Run and save the migration output
-              # npm audit fix --force
+              npm audit fix --force
               npm run migrations > migrations_dump.txt
 
       - run:
@@ -467,7 +467,7 @@ workflows:
       # - configure-infrastructure:
       #     requires: [create-inventory-file]
       - run-migrations:
-          requires: [build-backend]
+          requires: [scan-backend]
       # - deploy-frontend:
       #     requires: [build-frontend,build-backend,scan-frontend,scan-backend]
       # - deploy-backend:
