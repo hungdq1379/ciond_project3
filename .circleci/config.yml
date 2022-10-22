@@ -382,20 +382,20 @@ jobs:
             else
               return 1
             fi
-      - run:
-          name: Backend smoke test
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:project,Values=udapeople" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-            if curl "${API_URL}/api/status" | grep "ok"
-            then
-                return 0
-            else
-                return 1
-            fi
-      # - destroy-environment
-      # - revert-migrations
+      # - run:
+      #     name: Backend smoke test
+      #     command: |
+      #       export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:project,Values=udapeople" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
+      #       export API_URL="http://${BACKEND_IP}:3030"
+      #       echo "${API_URL}"
+      #       if curl "${API_URL}/api/status" | grep "ok"
+      #       then
+      #           return 0
+      #       else
+      #           return 1
+      #       fi
+      - destroy-environment
+      - revert-migrations
     
   promotion-phase:
     docker: 
@@ -483,7 +483,7 @@ workflows:
       - smoke-test:
           requires: [deploy-frontend]
       # - promotion-phase:
-      #     requires: [deploy-frontend]
+          # requires: [smoke-test]
       # - cleanup-phase:
       #     requires: [deploy-frontend]
       # - destroy-environments:
