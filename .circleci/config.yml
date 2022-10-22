@@ -479,15 +479,15 @@ workflows:
       - deploy-infrastructure-frontend:
           requires: [scan-backend]
       
-      # - create-inventory-file:
-      #     requires: [deploy-infrastructure-frontend]
-      #     filters:
-      #       branches:
-      #         only: [main]
-      # - configure-infrastructure:
-      #     requires: [create-inventory-file]
-      - run-migrations:
-          requires: [scan-backend]
+      - create-inventory-file:
+          requires: [deploy-infrastructure-frontend]
+          filters:
+            branches:
+              only: [main]
+      - configure-infrastructure:
+          requires: [create-inventory-file]
+      # - run-migrations:
+          # requires: [scan-backend]
       - deploy-frontend:
           requires: [scan-backend]
       - deploy-backend:
