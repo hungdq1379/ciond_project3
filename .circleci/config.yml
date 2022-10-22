@@ -393,7 +393,7 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment
+      # - destroy-environment
       # - revert-migrations
     
   promotion-phase:
@@ -480,7 +480,7 @@ workflows:
       - deploy-backend:
           requires: [configure-infrastructure]
       - smoke-test:
-          requires: [deploy-backend]
+          requires: [deploy-frontend]
       # - promotion-phase:
       #     requires: [deploy-frontend]
       # - cleanup-phase:
