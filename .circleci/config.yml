@@ -474,10 +474,10 @@ workflows:
           requires: [build-backend] 
       # - deploy-infrastructure-cloudfront:
           # requires: [scan-backend]
-      # - deploy-infrastructure-backend:
-      #     requires: [scan-backend]
-      # - deploy-infrastructure-frontend:
-      #     requires: [scan-backend]
+      - deploy-infrastructure-backend:
+          requires: [scan-backend]
+      - deploy-infrastructure-frontend:
+          requires: [scan-backend]
       
       # - create-inventory-file:
       #     requires: [deploy-infrastructure-frontend]
