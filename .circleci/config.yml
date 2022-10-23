@@ -474,8 +474,8 @@ workflows:
               only: [main]
       - configure-infrastructure:
           requires: [create-inventory-file]
-      # - run-migrations:
-          # requires: [scan-backend]
+      - run-migrations:
+          requires: [scan-backend]
       - deploy-frontend:
           requires: [configure-infrastructure]
       - deploy-backend:
