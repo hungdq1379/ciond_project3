@@ -383,18 +383,18 @@ jobs:
             else
               return 1
             fi
-      # - run:
-      #     name: Backend smoke test
-      #     command: |
-      #       export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:project,Values=udapeople" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
-      #       export API_URL="http://${BACKEND_IP}:3030"
-      #       echo "${API_URL}"
-      #       if curl "${API_URL}/api/status" | grep "ok"
-      #       then
-      #           return 0
-      #       else
-      #           return 1
-      #       fi
+      - run:
+          name: Backend smoke test
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:project,Values=udapeople" --query "Reservations[*].Instances[].PublicIpAddress" --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
       - destroy-environment
       - revert-migrations
     
@@ -503,32 +503,32 @@ workflows:
           requires: [build-backend] 
       # - deploy-infrastructure-cloudfront:
           # requires: [scan-backend]
-      # - deploy-infrastructure-backend:
-          # requires: [scan-backend]
-      # - deploy-infrastructure-frontend:
-          # requires: [scan-backend]
+      - deploy-infrastructure-backend:
+          requires: [scan-backend]
+      - deploy-infrastructure-frontend:
+          requires: [scan-backend]
       # - deploy-infrastructure-prometheus:
           # requires: [scan-backend]
-      - deploy-infrastructure-node-exporter:
-          requires: [scan-backend]
+      # - deploy-infrastructure-node-exporter:
+          # requires: [scan-backend]
     
-      # - create-inventory-file:
-      #     requires: [deploy-infrastructure-frontend]
-      #     filters:
-      #       branches:
-      #         only: [main]
-      # - configure-infrastructure:
-      #     requires: [create-inventory-file]
-      # - run-migrations:
-      #     requires: [scan-backend]
-      # - deploy-frontend:
-      #     requires: [configure-infrastructure]
-      # - deploy-backend:
-      #     requires: [configure-infrastructure]
-      # - smoke-test:
-      #     requires: [deploy-frontend]
-      # - promotion-phase:
-      #     requires: [smoke-test]
-      # - cleanup-phase:
-      #     requires: [promotion-phase]
+      - create-inventory-file:
+          requires: [deploy-infrastructure-frontend]
+          filters:
+            branches:
+              only: [main]
+      - configure-infrastructure:
+          requires: [create-inventory-file]
+      - run-migrations:
+          requires: [scan-backend]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [configure-infrastructure]
+      - smoke-test:
+          requires: [deploy-frontend]
+      - promotion-phase:
+          requires: [smoke-test]
+      - cleanup-phase:
+          requires: [promotion-phase]
      
