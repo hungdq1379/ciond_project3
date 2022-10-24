@@ -448,6 +448,46 @@ jobs:
     steps:
       - destroy-environment
 
+  deploy-infrastructure-prometheus:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - aws_configure_credential
+      - run:
+          name: Install tar and gzip
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: Deploy Infrastructure for Prometheus
+          command: |
+            # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
+            aws cloudformation deploy \
+               --template-file .circleci/files/backend.yml \
+               --stack-name "prometheus-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+                 --tags project=prometheus
+
+  deploy-infrastructure-node-exporter:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - aws_configure_credential
+      - run:
+          name: Install tar and gzip
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: Deploy Infrastructure for Node Exporter
+          command: |
+            # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
+            aws cloudformation deploy \
+               --template-file .circleci/files/backend.yml \
+               --stack-name "node-exporter-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+                 --tags project=node-exporter
+
 workflows:
   default:
     jobs:
@@ -463,31 +503,32 @@ workflows:
           requires: [build-backend] 
       # - deploy-infrastructure-cloudfront:
           # requires: [scan-backend]
-      - deploy-infrastructure-backend:
+      # - deploy-infrastructure-backend:
+          # requires: [scan-backend]
+      # - deploy-infrastructure-frontend:
+          # requires: [scan-backend]
+      - deploy-infrastructure-prometheus:
           requires: [scan-backend]
-      - deploy-infrastructure-frontend:
+      - deploy-infrastructure-node-exporter:
           requires: [scan-backend]
-      
-      - create-inventory-file:
-          requires: [deploy-infrastructure-frontend]
-          filters:
-            branches:
-              only: [main]
-      - configure-infrastructure:
-          requires: [create-inventory-file]
-      - run-migrations:
-          requires: [scan-backend]
-      - deploy-frontend:
-          requires: [configure-infrastructure]
-      - deploy-backend:
-          requires: [configure-infrastructure]
-      - smoke-test:
-          requires: [deploy-frontend]
-      - promotion-phase:
-          requires: [smoke-test]
-      - cleanup-phase:
-          requires: [promotion-phase]
-      # - destroy-environments:
-          # requires: [deploy-infrastructure-backend,deploy-infrastructure-frontend]
-      # - destroy-environments:
-          # requires: [deploy-infrastructure-backend]
+    
+      # - create-inventory-file:
+      #     requires: [deploy-infrastructure-frontend]
+      #     filters:
+      #       branches:
+      #         only: [main]
+      # - configure-infrastructure:
+      #     requires: [create-inventory-file]
+      # - run-migrations:
+      #     requires: [scan-backend]
+      # - deploy-frontend:
+      #     requires: [configure-infrastructure]
+      # - deploy-backend:
+      #     requires: [configure-infrastructure]
+      # - smoke-test:
+      #     requires: [deploy-frontend]
+      # - promotion-phase:
+      #     requires: [smoke-test]
+      # - cleanup-phase:
+      #     requires: [promotion-phase]
+     
