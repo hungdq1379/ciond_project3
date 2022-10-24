@@ -1,10 +1,19 @@
 1. Public URL to GitHub repository (not private) [URL01] e.g.
-https://github.com/username/project3-automation-superpower
+http://ec2-34-226-138-28.compute-1.amazonaws.com (config ansible success)
 2. Public URL for your S3 Bucket s3-website (aka, your green candidate front-end) [URL02] e.g.
+- Cloud Formation:
+https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/stackinfo?stackId=arn%3Aaws%3Acloudformation%3Aus-east-1%3A944095567375%3Astack%2FCloudFront-963e5b2-963e5b2%2F59e49810-4ef9-11ed-b7b7-0ed4333f6f1b
 http://udapeople-a7ea07c0.s3-website-us-east-1.amazonaws.com
+- FrontEnd: Created S3 bucket:
+http://udapeople-3b12027.s3-website-us-east-1.amazonaws.com/
+- Backend: 
+API_URL = http://44.201.100.200:3030
+- Smoke Test for FrontEnd:
+http://udapeople-d751344.s3-website-*********.amazonaws.com/#/employees
 3. Public URL for your CloudFront distribution cloudfront.net (aka, your blue production front-end) [URL03] e.g.
-http://d1cptrdkpsxeoh.cloudfront.net/#/employees
+Public URL: d2c528kfkbntia.cloudfront.net
 4. Public URL to deployed application back-end in EC2 [URL04] e.g.
-http://ec2-52-91-116-15.compute-1.amazonaws.com:3030/api/status
+- URL of Backend:
+http://udapeople-3cfb241.s3.amazonaws.com:3030/api/status
 5. Public URL to your Prometheus Server [URL05] e.g.
-http://ec2-54-144-29-47.compute-1.amazonaws.com:9090/graph
+http://ec2-52-91-97-182.compute-1.amazonaws.com:9100/metrics
