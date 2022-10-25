@@ -525,7 +525,7 @@ workflows:
           requires: [deploy-infrastructure-frontend]
           filters:
             branches:
-              only: [main]
+              only: [master]
       - configure-infrastructure:
           requires: [create-inventory-file]
       - run-migrations:
