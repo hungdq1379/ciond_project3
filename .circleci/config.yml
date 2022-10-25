@@ -389,7 +389,7 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               # Change this to 0 after the job fails
-              return 1
+              return 0
             else
               return 1
             fi
@@ -445,7 +445,7 @@ jobs:
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
               # your code goes here
-              aws s3 rm "s3://udapeople-03dc5b2" --recursive
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             else
@@ -529,16 +529,16 @@ workflows:
               only: [master]
       - configure-infrastructure:
           requires: [create-inventory-file]
-      - run-migrations:
-          requires: [scan-backend]
+      # - run-migrations:
+          # requires: [scan-backend]
       - deploy-frontend:
           requires: [configure-infrastructure]
       - deploy-backend:
           requires: [configure-infrastructure]
       - smoke-test:
           requires: [deploy-frontend]
-      # - promotion-phase:
-      #     requires: [smoke-test]
-      # - cleanup-phase:
-      #     requires: [promotion-phase]
+      - promotion-phase:
+          requires: [smoke-test]
+      - cleanup-phase:
+          requires: [promotion-phase]
      
