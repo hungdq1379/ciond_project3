@@ -6,8 +6,9 @@
     
 - name: Upload app 
   copy:
-    src: files/artifact.tar
-    dest: "~/app"
+    src: ~/project/artifact.tar.gz
+    dest: ~/app/artifact.tar.gz
+    
 - name: Install dependencies
   become: true
   shell: |
