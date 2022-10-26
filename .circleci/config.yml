@@ -278,6 +278,15 @@ jobs:
       - aws_cli_intsall
       - aws_configure_credential 
       - run:
+          name: Create file .env for migration and deployment backend
+          command: |
+            echo -e "VERSION=1\nTYPEORM_CONNECTION=${TYPEORM_CONNECTION}\nTYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR}\nTYPEORM_ENTITIES=${TYPEORM_ENTITIES}\nTYPEORM_MIGRATIONS=${TYPEORM_MIGRATIONS}\nTYPEORM_HOST=${TYPEORM_HOST}\nTYPEORM_PORT=${TYPEORM_PORT}\nTYPEORM_USERNAME=${TYPEORM_USERNAME}\nTYPEORM_PASSWORD=${TYPEORM_PASSWORD}\nTYPEORM_DATABASE=${TYPEORM_DATABASE}" >> backend/.env
+      - persist_to_workspace:
+          root: .
+          paths:
+            - backend/.env
+
+      - run:
           name: Run migrations
           command: |
               cd backend
@@ -295,15 +304,8 @@ jobs:
                   # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
                   curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi 
-      # - run:
-      #     name: Create file .env for migration and deployment backend
-      #     command: |
-      #       echo -e "VERSION=1\nTYPEORM_CONNECTION=${TYPEORM_CONNECTION}\nTYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR}\nTYPEORM_ENTITIES=${TYPEORM_ENTITIES}\nTYPEORM_MIGRATIONS=${TYPEORM_MIGRATIONS}\nTYPEORM_HOST=${TYPEORM_HOST}\nTYPEORM_PORT=${TYPEORM_PORT}\nTYPEORM_USERNAME=${TYPEORM_USERNAME}\nTYPEORM_PASSWORD=${TYPEORM_PASSWORD}\nTYPEORM_DATABASE=${TYPEORM_DATABASE}" >> backend/.env
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - backend/.env
-    
+      - destroy_environment
+      
 
   deploy-frontend:
     docker: 
@@ -534,6 +536,6 @@ workflows:
       - promotion-phase:
           # requires: [smoke-test]
           requires: [deploy-frontend,deploy-backend]
-      - cleanup-phase:
-          requires: [promotion-phase]
+      # - cleanup-phase:
+          # requires: [promotion-phase]
      
