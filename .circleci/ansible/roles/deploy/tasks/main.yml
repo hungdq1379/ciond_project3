@@ -1,37 +1,31 @@
----
-- name: Creates App directory
-  file:
-    path: ~/app
+- name: "install depencies"
+  become: yes
+  apt:
+    name: tar
+    state: latest
+    update_cache: yes
+
+- name: create directory store web code
+  become: yes
+  file: 
+    path: /home/web
     state: directory
-    
-- name: Upload app 
-  copy:
+    mode: 0755
+
+- name: copy artifact to web directory
+  become: yes
+  copy: 
     src: ~/project/artifact.tar.gz
-    dest: ~/app/artifact.tar.gz
-    
-- name: Install dependencies
-  become: true
+    dest: /home/web/artifact.tar.gz
+
+- name: uncompress
+  become: yes
   shell: |
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-    apt-get install -y nodejs
-    apt-get install gcc g++ make -y
-    npm install -g npm
-    npm install -g pm2
-    cd /home/ubuntu/app
-    tar xf /home/ubuntu/app/artifact.tar
-  
-- name: Start backend
-  shell:  |
-    /usr/bin/pm2 start /home/ubuntu/app/dist/main.js --name backend -f
-  environment:
-    ENVIRONMENT: production
-    NODE_ENV: production
-    TYPEORM_CONNECTION: postgres
-    TYPEORM_MIGRATIONS_DIR: ~/src/migrations
-    TYPEORM_MIGRATIONS: ~/src/migrations/*.ts
-    TYPEORM_ENTITIES: ~/src/modules/domain/**/*.entity.ts
-    TYPEORM_HOST: database-1.cvetdazzijaq.us-east-1.rds.amazonaws.com
-    TYPEORM_PORT: 5432
-    TYPEORM_USERNAME: postgres
-    TYPEORM_PASSWORD: Password1
-    TYPEORM_DATABASE: postgres
+    cd /home/web
+    tar -vxf artifact.tar.gz
+- name: build and start node
+  shell: |
+    cd /home/web
+    npm install
+    pm2 stop default
+    pm2 start npm -- start
