@@ -304,7 +304,7 @@ jobs:
                   # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
                   curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi 
-      - destroy_environment
+      - destroy-environment
       
 
   deploy-frontend:
@@ -525,8 +525,8 @@ workflows:
               only: [master]
       - configure-infrastructure:
           requires: [create-inventory-file]
-      # - run-migrations:
-          # requires: [scan-backend]
+      - run-migrations:
+          requires: [scan-backend]
       - deploy-frontend:
           requires: [configure-infrastructure]
       - deploy-backend:
