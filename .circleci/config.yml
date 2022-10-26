@@ -533,6 +533,6 @@ workflows:
       - promotion-phase:
           # requires: [smoke-test]
           requires: [deploy-frontend,deploy-backend]
-      # - cleanup-phase:
-          # requires: [promotion-phase]
+      - cleanup-phase:
+          requires: [promotion-phase]
      
