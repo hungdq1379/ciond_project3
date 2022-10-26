@@ -529,7 +529,7 @@ workflows:
       - configure-infrastructure:
           requires: [create-inventory-file]
       - run-migrations:
-          requires: [scan-backend]
+          requires: [test-backend]
       - deploy-frontend:
           requires: [configure-infrastructure]
       - deploy-backend:
