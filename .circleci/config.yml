@@ -520,10 +520,10 @@ workflows:
           requires: [create-inventory-file]
       - run-migrations:
           requires: [scan-backend]
-      # - deploy-frontend:
-      #     requires: [configure-infrastructure]
-      # - deploy-backend:
-      #     requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [configure-infrastructure]
       # - smoke-test:
           # requires: [deploy-frontend,deploy-backend]
       # - promotion-phase:
