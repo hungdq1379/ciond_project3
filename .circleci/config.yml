@@ -523,45 +523,45 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      # - build-frontend
       - build-backend
-      - test-frontend:
-          requires: [build-frontend]
+      # - test-frontend:
+      #     requires: [build-frontend]
       - test-backend:
           requires: [build-backend] 
-      - scan-frontend:
-          requires: [build-frontend]
+      # - scan-frontend:
+          # requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
       # - deploy-infrastructure-cloudfront:
           # requires: [scan-backend]
-      - deploy-infrastructure-backend:
-          requires: [scan-backend]
-      - deploy-infrastructure-frontend:
-          requires: [scan-backend]
+      # - deploy-infrastructure-backend:
+      #     requires: [scan-backend]
+      # - deploy-infrastructure-frontend:
+      #     requires: [scan-backend]
       # - deploy-infrastructure-prometheus:
           # requires: [scan-backend]
       # - deploy-infrastructure-node-exporter:
           # requires: [scan-backend]
     
-      - create-inventory-file:
-          requires: [deploy-infrastructure-frontend]
-          filters:
-            branches:
-              only: [master]
-      - configure-infrastructure:
-          requires: [create-inventory-file]
+      # - create-inventory-file:
+      #     requires: [deploy-infrastructure-frontend]
+      #     filters:
+      #       branches:
+      #         only: [master]
+      # - configure-infrastructure:
+      #     requires: [create-inventory-file]
       - run-migrations:
           requires: [scan-backend]
-      - deploy-frontend:
-          requires: [configure-infrastructure]
-      - deploy-backend:
-          requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [configure-infrastructure]
+      # - deploy-backend:
+      #     requires: [configure-infrastructure]
       # - smoke-test:
           # requires: [deploy-frontend,deploy-backend]
-      - promotion-phase:
+      # - promotion-phase:
           # requires: [smoke-test]
-          requires: [deploy-frontend,deploy-backend]
+          # requires: [deploy-frontend,deploy-backend]
       # - cleanup-phase:
           # requires: [promotion-phase]
      
