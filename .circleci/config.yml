@@ -297,7 +297,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ~/project/backend/.env
+            - backend/.env
 
       - run:
           name: Run migrations
