@@ -524,10 +524,10 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-backend:
           requires: [configure-infrastructure]
-      # - smoke-test:
-          # requires: [deploy-frontend,deploy-backend]
-      # - promotion-phase:
-          # requires: [smoke-test]
+      - smoke-test:
+          requires: [deploy-frontend,deploy-backend]
+      - promotion-phase:
+          requires: [smoke-test]
           # requires: [deploy-frontend,deploy-backend]
       # - cleanup-phase:
           # requires: [promotion-phase]
