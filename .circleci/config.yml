@@ -15,6 +15,8 @@ commands:
             aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}"
+            # aws cloudformation delete-stack --stack-name "CloudFront-${CIRCLE_WORKFLOW_ID:0:7}-${CIRCLE_WORKFLOW_ID:0:7}"
       # - run:
       #     name: Destroy environments
       #     when: on_success
@@ -200,7 +202,7 @@ jobs:
                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                  --tags project=udapeople
-          
+      - destroy-environment  
          
 
   deploy-infrastructure-frontend:
@@ -218,7 +220,7 @@ jobs:
                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                 --tags project=udapeople
-      
+      - destroy-environment
 
   create-inventory-file:
     docker:
@@ -405,12 +407,13 @@ jobs:
       - run:
           name: Deploy Infrastructure CloudFront
           command: | 
+            cd .circleci/files
             aws cloudformation deploy \
-              --template-file .circleci/files/cloudfront.yml \
+              --template-file cloudfront.yml \
               --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
-           
+      - destroy-environment     
       
   cleanup-phase:
     docker: 
@@ -434,9 +437,11 @@ jobs:
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" == "${OldWorkflowID}" ]]
             then
               # your code goes here
-              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+               aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
+               aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+               aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+               aws cloudformation delete-stack --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}"
+              #  aws cloudformation delete-stack --stack-name "CloudFront-${CIRCLE_WORKFLOW_ID:0:7}-${CIRCLE_WORKFLOW_ID:0:7}"
             else
               # your code goes here
               echo "nothing to do"
@@ -500,8 +505,8 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      - deploy-infrastructure-cloudfront:
-          requires: [scan-backend]
+      # - deploy-infrastructure-cloudfront:
+          # requires: [scan-backend]
       - deploy-infrastructure-backend:
           requires: [scan-backend]
       - deploy-infrastructure-frontend:
@@ -526,8 +531,8 @@ workflows:
           requires: [configure-infrastructure]
       - smoke-test:
           requires: [deploy-frontend,deploy-backend]
-      # - promotion-phase:
-      #     requires: [smoke-test]
+      - promotion-phase:
+          requires: [smoke-test]
           # requires: [deploy-frontend,deploy-backend]
       # - cleanup-phase:
           # requires: [promotion-phase]
