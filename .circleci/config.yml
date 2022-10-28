@@ -500,8 +500,8 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      # - deploy-infrastructure-cloudfront:
-          # requires: [scan-backend]
+      - deploy-infrastructure-cloudfront:
+          requires: [scan-backend]
       - deploy-infrastructure-backend:
           requires: [scan-backend]
       - deploy-infrastructure-frontend:
@@ -526,8 +526,8 @@ workflows:
           requires: [configure-infrastructure]
       - smoke-test:
           requires: [deploy-frontend,deploy-backend]
-      - promotion-phase:
-          requires: [smoke-test]
+      # - promotion-phase:
+      #     requires: [smoke-test]
           # requires: [deploy-frontend,deploy-backend]
       # - cleanup-phase:
           # requires: [promotion-phase]
