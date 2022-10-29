@@ -514,8 +514,8 @@ workflows:
       #     requires: [scan-backend]
       - deploy-infrastructure-prometheus:
           requires: [scan-backend]
-      - deploy-infrastructure-node-exporter:
-          requires: [scan-backend]
+      # - deploy-infrastructure-node-exporter:
+          # requires: [scan-backend]
     
       # - create-inventory-file:
       #     requires: [deploy-infrastructure-frontend]
