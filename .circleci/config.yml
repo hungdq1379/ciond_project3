@@ -518,11 +518,11 @@ workflows:
                branches:
                  only: [master]
       - deploy-infrastructure-frontend:
-         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
              filters:
                branches:
                  only: [master]
-#       - deploy-infrastructure-prometheus:
+#    - deploy-infrastructure-prometheus:
        #   requires: [scan-backend]
       # - deploy-infrastructure-node-exporter:
           # requires: [scan-backend]
