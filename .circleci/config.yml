@@ -506,34 +506,44 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend] 
-      # - deploy-infrastructure-cloudfront:
-          # requires: [scan-backend]
-      # - deploy-infrastructure-backend:
-      #     requires: [scan-backend]
-      # - deploy-infrastructure-frontend:
-      #     requires: [scan-backend]
-      - deploy-infrastructure-prometheus:
-          requires: [scan-backend]
+      - deploy-infrastructure-cloudfront:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+             filters:
+               branches:
+                 only: [master]
+       
+      - deploy-infrastructure-backend:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+             filters:
+               branches:
+                 only: [master]
+      - deploy-infrastructure-frontend:
+         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+             filters:
+               branches:
+                 only: [master]
+#       - deploy-infrastructure-prometheus:
+       #   requires: [scan-backend]
       # - deploy-infrastructure-node-exporter:
           # requires: [scan-backend]
     
-      # - create-inventory-file:
-      #     requires: [deploy-infrastructure-frontend]
-      #     filters:
-      #       branches:
-      #         only: [master]
-      # - configure-infrastructure:
-      #     requires: [create-inventory-file]
-      # - run-migrations:
-      #     requires: [scan-backend]
-      # - deploy-frontend:
-      #     requires: [configure-infrastructure]
-      # - deploy-backend:
-      #     requires: [configure-infrastructure]
-      # - smoke-test:
-      #     requires: [deploy-frontend,deploy-backend]
-      # - promotion-phase:
-      #     requires: [smoke-test]
-      # - cleanup-phase:
-      #     requires: [promotion-phase]
+      - create-inventory-file:
+          requires: [deploy-infrastructure-frontend]
+          filters:
+            branches:
+              only: [master]
+      - configure-infrastructure:
+          requires: [create-inventory-file]
+      - run-migrations:
+          requires: [scan-backend]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [configure-infrastructure]
+      - smoke-test:
+          requires: [deploy-frontend,deploy-backend]
+      - promotion-phase:
+          requires: [smoke-test]
+      - cleanup-phase:
+          requires: [promotion-phase]
      
